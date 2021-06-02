@@ -69,7 +69,7 @@ The algorithm is:
     - `sudo service siad start`
 - repeat
 
-### 🔑 Automatic unlock
+### 🔑 Automatic Unlock
 [Propper way of doing it.](https://support.sia.tech/your-sia-wallet/for-advanced-users/how-to-automatically-restart-and-unlock-sia)
 
 
@@ -95,7 +95,7 @@ The algorithm is:
 - repeat
 
 
-### 💰 Automatic payout
+### 💰 Automatic Payout
 So, if you have automatic unlock enabled, you should
 try to keep as little Siacoins as possible on the host,
 and keep as much as possible on a safe wallet.
@@ -124,7 +124,7 @@ Algorithm:
 - send the coins
 - repeat
 
-### 🎮 Automatic throttling
+### 🎮 Automatic Throttling
 If you host at home, have a shitty ISP and still want 
 to be able to play online games, you might need to
 throttle your sia server.  
