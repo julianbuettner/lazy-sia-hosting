@@ -84,18 +84,18 @@ class AutoPrice(AutoModule):
         raise NotImplementedError()
 
     def set_price_by_rank_delta(self, delta):
-        """+3 means, we have to rank better.
-        -3 means we have to rank worse.
+        """-3 means, we have to rank better.
+        +3 means we have to rank worse.
         
         Example: Current rank #42, target rank #45.
-        So the delta is -3. We have to rank worse,
+        So the delta to move is +3. We have to rank worse,
         meaning increase the price.
         """
-        self.print("Rank delta: {}".format(delta))
+        self.print("Rank delta to move: {}".format(delta))
         current_price = self.siad.storage_price
-        new_price = current_price * 0.99 ** delta
+        new_price = current_price * 1.01 ** delta
         new_price = max(self.minimum_price, new_price)
-        self.print("New price: {}".format(new_price))
+        self.print("New price: {:.2f}SC".format(new_price))
 
         self.siad.storage_price = new_price
         self.siad.collateral = new_price * self.collateral_factor
@@ -109,11 +109,14 @@ class AutoPrice(AutoModule):
         rank, price = rank_price
         current_price = self.siad.storage_price
 
-        self.print("Hostdb current rank #{}".format(rank))
+        self.print("Hostdb current rank #{} with {:.2f}SC".format(rank, price))
         if get_percentage_delta(price, current_price) > 0.1:
             # More than 0.1% deviation
             # HostDB not up to date => wait
-            self.print("Hostdb not up to date. Retry later.")
+            self.print(
+                "Hostdb not up to date. Actual price: {:.2f}SC. Retry later."
+                .format(current_price)
+            )
             return
 
         rank_delta = self.hostdb_rank - rank
@@ -122,15 +125,21 @@ class AutoPrice(AutoModule):
     def set_by_siastats(self):
         siastats = Siastats(self.siad)
         siastats_actual_rank = siastats.rank
-
-        self.print("Siastats current rank #{}".format(siastats_actual_rank))
-
         price = siastats.storage_price
+
+        self.print(
+            "Siastats current rank #{} with {:.2f}SC"
+            .format(siastats_actual_rank, price)
+        )
+
         current_price = self.siad.storage_price
         if get_percentage_delta(price, current_price) > 0.1:
             # More than 0.1% deviation
             # Siastats not up to date => wait
-            self.print("Siastats not up to date. Retry later.")
+            self.print(
+                "Siastats not up to date. Actual price: {:.2f}SC. Retry later."
+                .format(current_price)
+            )
             return
 
         rank_delta = self.siastats_rank - siastats_actual_rank

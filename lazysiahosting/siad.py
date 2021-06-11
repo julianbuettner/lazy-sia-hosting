@@ -5,7 +5,7 @@ from requests import (
 from requests.auth import HTTPBasicAuth
 from enum import Enum
 
-TERRABYTE_BYTES = 10e12
+TERRABYTE_BYTES = 1e12
 BLOCKS_PER_MONTH = 4320
 
 class Result(Enum):
@@ -14,10 +14,10 @@ class Result(Enum):
 
 
 def hastings_to_siacoin(h: str) -> float:
-    return int(h) / 10 ** 24
+    return int(h) / 1e24
 
 def siacoin_to_hastings(sc: float) -> str:
-    return str(int(sc * 10 ** 24))
+    return str(int(sc * 1e24))
 
 
 def tiny_price_to_big_price(hastings: str) -> float:
